@@ -9,7 +9,7 @@ public class ExConstructor : MonoBehaviour
     public ExConstructor(int _value)
     {
         value = _value;
-        Debug.Log("객체가 생성 되었습니다. 초기값 :" + value);
+        Debug.Log("객체가 생성 되었습니다. 초기값 : " + value);
 
     }
     void start()
