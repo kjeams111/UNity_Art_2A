@@ -64,6 +64,7 @@ namespace STORYGAME
         public StoryTableObject[] storyModels;
         public StoryTableObject currentModels;
         public int currentStoryIndex;
+        public bool showStory = false;
 
 
 
@@ -80,8 +81,56 @@ namespace STORYGAME
             StartCoroutine(ShowText());
         }
 
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Q)) StoryShow(1);
+            if (Input.GetKeyDown(KeyCode.W)) StoryShow(2);
+            if (Input.GetKeyDown(KeyCode.E)) StoryShow(3);
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                currentText = currentModels.storyText;
+                textComponent.text = currentText;
+                StopCoroutine(ShowText());
+                showStory = false;
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                delay = 0.0f;
+            }
+
+        }
+
+        public void StoryShow(int number)
+        {
+            if(!showStory)
+            {
+            currentModels = FindStoryModel(number);
+                delay = 0.1f;
+            StartCoroutine(ShowText());
+
+            }
+        }
+
+        StoryTableObject FindStoryModel(int number)
+        {
+            StoryTableObject tempStoryModels = null;
+            for(int i = 0; i < storyModels.Length; i++)
+            {
+                if(storyModels[i].storyNumber == number)
+                {
+                    tempStoryModels = storyModels[i];
+                    break;
+                }
+            }
+
+            return tempStoryModels;
+        }
         IEnumerator ShowText()
         {
+            showStory = true;
             for(int i = 0; i <= currentModels.storyText.Length; i++)
             {
                 currentText = currentModels.storyText.Substring(0, i);
@@ -90,6 +139,7 @@ namespace STORYGAME
 
             }
             yield return new WaitForSeconds(delay);
+            showStory = false;
         }
 
 
