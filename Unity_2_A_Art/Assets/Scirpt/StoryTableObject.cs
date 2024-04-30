@@ -10,7 +10,7 @@ namespace STORYGAME
     public class StoryTableObject : ScriptableObject
     {
         public int storyNumber;
-        public Exnums.StoryType storyType;
+        public Exnums.StoryType storyType; //스토리 타입 설정
         public bool storyDone;
 
         [TextArea(10, 10)]
@@ -22,8 +22,8 @@ namespace STORYGAME
         {
             public int checkValue;
             public Exnums.EvenType eventType;
-            public List<Reslut> successResult = new List<Reslut>();
-            public List<Reslut> failResult = new List<Reslut>();
+            public List<Result> successResult = new List<Result>();
+            public List<Result> failResult = new List<Result>();
         }
             [System.Serializable]
         public class Option
@@ -35,7 +35,7 @@ namespace STORYGAME
 
         [System.Serializable]
 
-        public class Reslut
+        public class Result
         {
             public Exnums.ResultType resultType;
             public int value;
