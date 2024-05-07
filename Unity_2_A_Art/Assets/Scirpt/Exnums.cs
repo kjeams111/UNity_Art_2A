@@ -52,15 +52,14 @@ namespace STORYGAME
 
             public int currentHpPoint;
             public int currentSpPoint;
-            public int currentxpPoint;
+            public int currentXpPoint;
 
             public int strength;
             public int dexterity;
             public int consitiution;
             public int wisdom;
             public int charisma;
-
-
+            public int Intelligence;
         }
     }
 }

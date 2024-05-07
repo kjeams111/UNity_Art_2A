@@ -26,6 +26,7 @@ public class StoryModel : ScriptableObject
     public string storyText;   //메인 스토리
 
     public Option[] options; //선택지 배열
+    internal int StoryNumber;
 
     [System.Serializable]
 
