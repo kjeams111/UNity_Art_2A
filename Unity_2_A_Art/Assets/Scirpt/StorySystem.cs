@@ -13,8 +13,9 @@ public class StorySystem : MonoBehaviour
     public static StorySystem instance;       //간단한 싱글톤 화
     public StoryModel currentStoryModel;      //지금 스토리  모델 참조
 
-    public enum TEXTSTSTEM
+    public enum TEXTSYSTEM
     {
+        NONE,
         DOING,
         SELECT,
         DONE
@@ -30,6 +31,8 @@ public class StorySystem : MonoBehaviour
     public Button[] buttonWay = new Button[3]; //선택지 버튼 추가
     public Text[] buttonWayText = new Text[3]; //선택지 버튼 Text
 
+    public TEXTSYSTEM currentTextShow = TEXTSYSTEM.NONE;
+
 
     private void Awake()
     {
@@ -40,9 +43,12 @@ public class StorySystem : MonoBehaviour
 
         for(int i = 0; i < buttonWay.Length; i++) //버튼 숫자에 따른 함수
         {
-            int wayIndex = 1;
+            int wayIndex = i;
             buttonWay[i].onClick.AddListener(() => OnWayClick(wayIndex));
+
+
         }
+            CoShowText();
 
         StoryModelinit();
         StartCoroutine(ShowText());    
@@ -59,15 +65,47 @@ public class StorySystem : MonoBehaviour
         }
 
     }
-    public void OnWayClick(int index)
+    public void OnWayClick(int index) //선택지 버튼에 따른 함수 index는 버튼에 연결된 번호를 받아온다.
     {
 
+        if (currentTextShow == TEXTSYSTEM.DOING)
+            return;
+
+        bool CheckEventTypeNone = false; //기본으로 NONE일때는 무조건 성공이라고 판단 하고 실패시에 다시 불리는것을 피하기 위해서 Bool 선언
+        StoryModel playStoryModel = currentStoryModel;
+
+        if(playStoryModel.options[index].eventCheck.eventType == StoryModel.EventCheck.EventType.NONE)
+        {
+            for(int i = 0; i < playStoryModel.options[index].eventCheck.suceessResult.Length; i++)
+            {
+                GameSystem.instance.AppleyChoice(currentStoryModel.options[index].eventCheck.suceessResult[i]);
+                CheckEventTypeNone = true;
+            }
+        }
     }
 
+    public void CoShowText()
+    {
+        StoryModelinit();
+        ResetShow();
+        StartCoroutine(ShowText());
+    }
+
+    public void ResetShow()
+    {
+        textComponent.text = "";
+
+        for(int i = 0; i < buttonWay.Length; i++)
+        {
+            buttonWay[i].gameObject.SetActive(false);
+        }
+    }
 
     
    IEnumerator ShowText()
    {
+        currentTextShow = TEXTSYSTEM.DOING;
+
         if(currentStoryModel.MainImage != null)
         {
             Rect rect = new Rect(0, 0, currentStoryModel.MainImage.width, currentStoryModel.MainImage.height);
@@ -96,5 +134,6 @@ public class StorySystem : MonoBehaviour
 
 
         yield return new WaitForSeconds(delay);
+        currentTextShow = TEXTSYSTEM.NONE;
     }
 }

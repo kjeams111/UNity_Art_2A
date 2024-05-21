@@ -34,7 +34,7 @@ public class StoryModel : ScriptableObject
     {
         public string optionText;
         public string buttonText;
-
+        public EventCheck eventCheck;
     }
 
 
